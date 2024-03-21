@@ -177,6 +177,7 @@ To push the image to Docker Hub, you need to:
 docker login -u docker_hub_username
 # Enter your password when prompted
 ```
+
 Then, you can use the `docker tag` command to tag the image you built with your Docker Hub username and the repository name.
 
 ```bash
@@ -209,7 +210,7 @@ docker login -u your_username harbor.cyverse.org
 # Enter your CLI password when prompted
 ```
 
-The CLI password is not the same as your CyVerse password. 
+The CLI password is not the same as your CyVerse password.
 You can find it at [Harbor](https://harbor.cyverse.org/) in the top right menu under `your_username` -> `User Profile` -> `CLI secret`.
 
 Then, you can use the `docker tag` command to tag the image you built with the path to your Harbor repository.
