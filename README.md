@@ -137,7 +137,7 @@ docker images
 
 The `docker images` command lists the images on your machine. It shows the repository, tag, image ID, and creation date.
 
-#### Remove unused images
+#### Remove unused images (optional)
 
 By default, Docker does not remove images that are not used by any container.
 To list the unused images, you can use the following command:
