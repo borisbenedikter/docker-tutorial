@@ -6,7 +6,8 @@ This is a tutorial on how to use Docker. It is intended for beginners who are ne
 
 ### Prerequisites
 
-Before you start, you need to have Docker installed on your machine. If you don't have it installed, you can download it from the official website: [https://www.docker.com/](https://www.docker.com/)
+Before you start, you need to have the Docker Engine installed on your machine. 
+If you don't have it installed, you can learn how to do it from the [official website](https://docs.docker.com/engine/install/).
 
 ### What is Docker?
 
