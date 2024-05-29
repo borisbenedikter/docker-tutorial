@@ -170,7 +170,7 @@ Once you have built the Docker image, you can push it to a registry so that it c
 
 To push the image to Docker Hub, you need to:
 
-1. Create an account on the Docker Hub website
+1. Create an account on the [Docker Hub website](https://hub.docker.com/).
 2. Create a repository with any name `repo_name` (e.g., `random-matrix-generator`)
 3. Log into the Docker Hub from the command line
 
@@ -200,6 +200,12 @@ For instance, to push the image to Docker Hub, you can use the following command
 docker push docker_hub_username/random-matrix-generator:latest
 ```
 
+To pull the image from Docker Hub, you can use the following command:
+
+```bash
+docker pull docker_hub_username/random-matrix-generator:latest
+```
+
 #### CyVerse container registry (Harbor)
 
 Instead, to push it to CyVerse container registry, called `Harbor`, you should first create an account on the CyVerse website and then log into [Harbor](https://harbor.cyverse.org/) using your CyVerse username and password.
@@ -226,4 +232,10 @@ Then, you can use the `docker push` command to push the image to the CyVerse con
 docker push harbor.cyverse.org/your_repo/random-matrix-generator:latest
 ```
 
-Note that you must be either the owner of the repository `your_repo` or have the `Maintainer` role to be able to push images to the repository.
+Note that you must be either the owner of the repository `your_repo` or have at least the `Maintainer` role to be able to push images to the repository.
+
+To pull the image from the CyVerse container registry, you can use the following command:
+
+```bash
+docker pull harbor.cyverse.org/your_repo/random-matrix-generator:latest
+```
