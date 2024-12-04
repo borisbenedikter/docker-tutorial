@@ -9,6 +9,45 @@ This is a tutorial on how to use Docker. It is intended for beginners who are ne
 Before you start, you need to have the Docker Engine installed on your machine. 
 If you don't have it installed, you can learn how to do it from the [official website](https://docs.docker.com/engine/install/).
 
+The following steps install the Docker Engine on Ubuntu 22.04:
+
+1. Set up the `apt` repository where the Docker packages are stored:
+
+```bash
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+2. Install the Docker packages:
+
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+3. Verify that Docker is installed correctly by running the `hello-world` container:
+
+```bash
+sudo docker run hello-world
+```
+
+If you see the message `Hello from Docker!`, then Docker is installed correctly.
+Otherwise, if you see the message `docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?`, you need to start the Docker service:
+
+```bash
+sudo service docker start
+```
+
 ### What is Docker?
 
 Docker is a platform for developers to develop, ship, and run applications. It allows you to separate your applications from your infrastructure so you can deliver software quickly.
