@@ -48,6 +48,34 @@ Otherwise, if you see the message `docker: Cannot connect to the Docker daemon a
 sudo service docker start
 ```
 
+### Run Docker without `sudo`
+
+By default, the Docker daemon binds to a Unix socket owned by the user `root`.
+If you want to run Docker commands without `sudo`, you need to add your user to the `docker` group.
+First, create the `docker` group:
+
+```bash
+sudo groupadd docker
+```
+
+Then, add your user to the `docker` group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Log in to the new docker group (to avoid having to log out and log in again; but if not enough, try to reboot):
+
+```bash
+newgrp docker
+```
+
+Finally, verify that you can run Docker commands without `sudo`:
+
+```bash
+docker run hello-world
+```
+
 ### What is Docker?
 
 Docker is a platform for developers to develop, ship, and run applications. It allows you to separate your applications from your infrastructure so you can deliver software quickly.
