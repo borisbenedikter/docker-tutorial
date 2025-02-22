@@ -194,6 +194,16 @@ docker build . -t random-matrix-generator:latest
 
 The `-t` flag is used to specify the tag for the image. The tag is used to identify the image when you run it.
 
+#### Specify Which Dockerfile to Use
+
+Some projects may have multiple Dockerfiles in the same directory.
+The best practice to handle multiple Dockerfiles is to add meaningful suffixes to the Dockerfile names (e.g., `Dockerfile.dev`, `Dockerfile.prod`).
+Then, you can specify which Dockerfile to use by passing the `-f` flag to the `docker build` command.
+
+```bash
+docker build . -f Dockerfile.dev -t random-matrix-generator:latest
+```
+
 #### List the images
 
 By running the `docker images` command, you can see the list of images on your machine.
@@ -228,6 +238,19 @@ docker run random-matrix-generator:latest
 ```
 
 The `docker run` command takes the tag of the image as an argument. It runs the image in a container and starts the application.
+
+#### Mount a Volume
+
+This is not the case in this example, but in general, you may want to access files that the docker container generates.
+To do this, you can use the `-v` flag to mount a volume from the host machine to the container.
+
+```bash
+docker run -v /path/to/host/dir:/path/to/container/dir random-matrix-generator:latest
+```
+
+Mounting a volume allows you to share files between the host machine and the container.
+Specifically, host directory `/path/to/host/dir` is mounted to the container directory `/path/to/container/dir`.
+Every file that is created in that container directory will be accessible from that host directory.
 
 ### 4. Push the Docker image to a registry
 
