@@ -289,6 +289,22 @@ In case your container has an entrypoint, you can append the `--entrypoint /bin/
 docker run -dit --entrypoint /bin/bash random-matrix-generator:latest
 ```
 
+When running in detached mode, docker assigns a random name to the container (e.g., `frosty_bell`, `happy_banach`).
+To assign a specific name to the container, you can use the `--name` flag:
+
+```bash
+docker run -dit --name my_container random-matrix-generator:latest
+```
+
+A container name must be unique on a Docker host.
+Even after the container is stopped, the name is still reserved.
+To be able to reuse the name, you must stop and remove the container with the same name:
+
+```bash
+docker stop my_container
+docker rm my_container
+```
+
 ### 4. Push the Docker image to a registry
 
 Once you have built the Docker image, you can push it to a registry so that it can be used by others.
