@@ -53,6 +53,7 @@ int main(int argc, char** argv)
     // to the console.
     if (file_name != "")
     {
+        std::cout << "Matrix written to file: " << file_name << std::endl;
         std::ofstream file(file_name);
         file << matrix;
         file.close();
