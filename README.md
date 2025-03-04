@@ -239,6 +239,8 @@ docker run random-matrix-generator:latest
 
 The `docker run` command takes the tag of the image as an argument. It runs the image in a container and starts the application.
 
+#### Add command-line arguments
+
 To add command-line arguments to the application, you can simply append them to the `docker run` command.
 
 ```bash
@@ -257,6 +259,35 @@ docker run -v /path/to/host/dir:/path/to/container/dir random-matrix-generator:l
 Mounting a volume allows you to share files between the host machine and the container.
 Specifically, host directory `/path/to/host/dir` is mounted to the container directory `/path/to/container/dir`.
 Every file that is created in that container directory will be accessible from that host directory.
+
+#### Run the Container in the Background
+
+By default, the `docker run` command runs the container in the foreground.
+To run the container in the background, you can use the `-d` flag.
+
+```bash
+docker run -dit random-matrix-generator:latest
+```
+
+The `-d` flag is used to run the container in detached mode.
+This means that the container runs in the background and does not attach to the terminal.
+The `-i` flag is used to keep STDIN open even if not attached.
+The `-t` flag is used to allocate a pseudo-TTY (i.e., a terminal).
+
+Having the container running in the background is useful when you want to run long-running processes.
+This is also useful when you want to attach VSCode to the running container for opening the source code.
+Indeed, you can attach VSCode only to a running container.
+In case your container runs only for a short time, you can append the `/bin/bash` command to the `docker run` command to open a shell in the container and thus keep it running:
+
+```bash
+docker run -dit random-matrix-generator:latest /bin/bash
+```
+
+In case your container has an entrypoint, you can append the `--entrypoint /bin/bash` flag to the `docker run` command to override the entrypoint and open a shell in the container:
+
+```bash
+docker run -dit --entrypoint /bin/bash random-matrix-generator:latest
+```
 
 ### 4. Push the Docker image to a registry
 
