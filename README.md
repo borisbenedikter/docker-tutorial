@@ -382,3 +382,60 @@ To pull the image from the CyVerse container registry, you can use the following
 ```bash
 docker pull harbor.cyverse.org/your_repo/random-matrix-generator:latest
 ```
+
+## Exporting the Docker image to a tar file
+
+If you want to export the Docker image to a tar file, you can use the `docker export` command.
+The `docker export` command is used to export the contents of a container's filesystem as a tar archive.
+
+A common use case for this is to export the container's filesystem to a tar file so that it can be used to import a WSL (Windows Subsystem for Linux) distribution.
+To do this, you need to first run the container and then use the `docker export` command to export the container's filesystem.
+
+Start by running the container in your WSL environment.
+
+```bash
+docker run -t --name my_container ubuntu:22.04 ls /
+```
+
+Then, you can use the `docker export` command to export the container's filesystem to a tar file:
+
+```bash
+docker export my_container > /mnt/c/temp/my_container.tar
+```
+
+This will create a tar file named `my_container.tar` in the `/mnt/c/temp/` directory, which is accessible from your Windows file system 
+(`C:\temp\my_container.tar`).
+
+You can now clean up the container by stopping and removing it:
+
+```bash
+docker stop my_container
+docker rm my_container
+```
+
+To import the tar file into WSL, open the PowerShell or Command Prompt and navigate to the directory where the tar file is located.
+
+```powershell
+cd C:\temp
+```
+
+Then, create a new directory for the WSL distribution:
+
+```powershell
+mkdir C:\wslDistroStorage\my_container
+```
+
+Then, you can use the `wsl --import` command to import the tar file into WSL.
+
+```bash
+wsl --import my_container C:\wslDistroStorage\my_container C:\temp\my_container.tar
+```
+
+This will create a new WSL distribution named `my_container` in the `C:\wslDistroStorage\my_container` directory.
+
+You can now run the WSL distribution using the following command:
+
+```bash
+wsl -d my_container
+```
+
