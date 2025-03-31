@@ -280,21 +280,21 @@ Indeed, you can attach VSCode only to a running container.
 In case your container runs only for a short time, you can append the `/bin/bash` command to the `docker run` command to open a shell in the container and thus keep it running:
 
 ```bash
-docker run -dit random-matrix-generator:latest /bin/bash
+docker run -dit --name my_container --entrypoint /bin/bash random-matrix-generator:latest
 ```
 
-In case your container has an entrypoint, you can append the `--entrypoint /bin/bash` flag to the `docker run` command to override the entrypoint and open a shell in the container:
+The `--name` flag is used to give a name to the container.
+Indeed, when running in detached mode, docker assigns a random name to the container (e.g., `frosty_bell`, `happy_banach`).
+To assign a specific name to the container, you must use the `--name` flag.
 
-```bash
-docker run -dit --entrypoint /bin/bash random-matrix-generator:latest
-```
+The `--entrypoint` flag is used to override the default entrypoint of the image.
+This is useful when you want to run a different command in the container.
 
-When running in detached mode, docker assigns a random name to the container (e.g., `frosty_bell`, `happy_banach`).
-To assign a specific name to the container, you can use the `--name` flag:
-
-```bash
-docker run -dit --name my_container random-matrix-generator:latest
-```
+To attach VSCode to the running container, you can use the `Dev Containers` extension.
+To do this, you need to install the `Dev Containers` and `Docker` extensions in VSCode.
+In the Docker tab, you can see the list of running containers.
+You can right-click on the container and select `Attach Visual Studio Code`.
+This will open a new VSCode window with the source code of the container.
 
 A container name must be unique on a Docker host.
 Even after the container is stopped, the name is still reserved.
