@@ -439,3 +439,75 @@ You can now run the WSL distribution using the following command:
 wsl -d my_container
 ```
 
+## Docker Compose
+
+Docker Compose is a tool for defining and running multi-container Docker applications.
+It allows you to define a multi-container application in a single YAML file, known as the Compose file.
+
+### Installation
+
+To install Docker Compose, you can follow the instructions on the [official website](https://docs.docker.com/compose/install/).
+
+To summarize, if you have Docker Engine installed, you can install Docker Compose by running the following commands:
+
+```bash
+sudo apt update
+sudo apt install docker-compose-plugin
+```
+
+### Compose File
+
+The Compose file is a YAML file that defines the services, networks, and volumes for your application.
+Services are the containers that make up your application, networks are the communication channels between the containers, and volumes are the persistent storage for the containers.
+
+The preferred file name is `compose.yaml` or `compose.yml`.
+For backward compatibility with older versions of Docker Compose, `docker-compose.yaml` or `docker-compose.yml` are also supported.
+
+A minimal Compose file for an application with two services, `web` and `redis`, looks like this:
+
+```yaml
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+
+  redis:
+    image: "redis:alpine"
+```
+
+In this example, the `web` service is built from the current directory (`.`), meaning it uses the `Dockerfile` in the current directory.
+The `ports` section maps port `5000` in the container to port `8000` on the host machine, which allows you to access the web service from your host machine.
+The `redis` service uses the `redis:alpine` image, which is a lightweight version of the Redis database, but it can be replaced with any other image you want to use.
+
+If additional arguments are needed to build the `web` service, you can break the `build` section into two parts: `context`, which specifies the build context (the directory containing the Dockerfile), and `args`, which specifies the build arguments.
+  
+```yaml
+services:
+  web:
+    build:
+      context: .
+      args:
+        MY_ARG: "value"
+    ports:
+      - "8000:5000"
+
+  redis:
+    image: "redis:alpine"
+```
+
+### Build and Run the Compose Application
+
+To build and run the application defined in the Compose file, you can use the `docker compose up` command.
+
+```bash
+docker compose up
+```
+
+This command will build the images for the services defined in the Compose file and start the containers.
+
+To stop the application, you can use the `docker compose down` command.
+
+```bash
+docker compose down
+```
