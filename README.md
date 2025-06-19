@@ -239,6 +239,19 @@ docker run random-matrix-generator:latest
 
 The `docker run` command takes the tag of the image as an argument. It runs the image in a container and starts the application.
 
+To stop a running container, you can use the `docker stop` command:
+
+```bash
+docker stop <container_name>
+```
+
+The `<container_name>` is the name of the container that you want to stop. You can find the name of the container by running the `docker ps` command, which lists all running containers.
+To see all running containers, 
+
+```bash
+docker ps
+```
+
 #### Add command-line arguments
 
 To add command-line arguments to the application, you can simply append them to the `docker run` command.
@@ -259,6 +272,18 @@ docker run -v /path/to/host/dir:/path/to/container/dir random-matrix-generator:l
 Mounting a volume allows you to share files between the host machine and the container.
 Specifically, host directory `/path/to/host/dir` is mounted to the container directory `/path/to/container/dir`.
 Every file that is created in that container directory will be accessible from that host directory.
+
+#### Ownership and Permissions
+
+Usually, docker containers run as the root user, which means it can create files owned by root on your host system as well.
+This can cause permission issues when you try to access those files from your host system, even after stopping the container.
+To restore the ownership of the files, you can use the `chown` command.
+
+```bash
+sudo chown -R $USER:$USER /path/to/host/dir
+```
+
+The `$USER` variable is used to get the current user. The `-R` flag is used to change the ownership of all files in the directory recursively.
 
 #### Run the Container in the Background
 
