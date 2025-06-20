@@ -239,6 +239,22 @@ docker run random-matrix-generator:latest
 
 The `docker run` command takes the tag of the image as an argument. It runs the image in a container and starts the application.
 
+#### Automatically remove the container after it stops
+
+To automatically remove the container after it stops, you can use the `--rm` flag.
+
+```bash
+docker run --rm random-matrix-generator:latest
+```
+
+This is useful to avoid leaving stopped containers on your machine, which can take up disk space.
+
+To manually remove all stopped containers, you can use the following command:
+
+```bash
+docker rm $(docker ps -aq)
+```
+
 #### Add command-line arguments
 
 To add command-line arguments to the application, you can simply append them to the `docker run` command.
