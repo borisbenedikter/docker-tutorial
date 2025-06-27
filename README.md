@@ -239,6 +239,19 @@ docker run random-matrix-generator:latest
 
 The `docker run` command takes the tag of the image as an argument. It runs the image in a container and starts the application.
 
+To stop a running container, you can use the `docker stop` command:
+
+```bash
+docker stop <container_name>
+```
+
+The `<container_name>` is the name of the container that you want to stop. You can find the name of the container by running the `docker ps` command, which lists all running containers.
+To see all running containers, 
+
+```bash
+docker ps
+```
+
 #### Automatically remove the container after it stops
 
 To automatically remove the container after it stops, you can use the `--rm` flag.
@@ -276,6 +289,18 @@ Mounting a volume allows you to share files between the host machine and the con
 Specifically, host directory `/path/to/host/dir` is mounted to the container directory `/path/to/container/dir`.
 Every file that is created in that container directory will be accessible from that host directory.
 
+#### Ownership and Permissions
+
+Usually, docker containers run as the root user, which means it can create files owned by root on your host system as well.
+This can cause permission issues when you try to access those files from your host system, even after stopping the container.
+To restore the ownership of the files, you can use the `chown` command.
+
+```bash
+sudo chown -R $USER:$USER /path/to/host/dir
+```
+
+The `$USER` variable is used to get the current user. The `-R` flag is used to change the ownership of all files in the directory recursively.
+
 #### Run the Container in the Background
 
 By default, the `docker run` command runs the container in the foreground.
@@ -296,21 +321,21 @@ Indeed, you can attach VSCode only to a running container.
 In case your container runs only for a short time, you can append the `/bin/bash` command to the `docker run` command to open a shell in the container and thus keep it running:
 
 ```bash
-docker run -dit random-matrix-generator:latest /bin/bash
+docker run -dit --name my_container --entrypoint /bin/bash random-matrix-generator:latest
 ```
 
-In case your container has an entrypoint, you can append the `--entrypoint /bin/bash` flag to the `docker run` command to override the entrypoint and open a shell in the container:
+The `--name` flag is used to give a name to the container.
+Indeed, when running in detached mode, docker assigns a random name to the container (e.g., `frosty_bell`, `happy_banach`).
+To assign a specific name to the container, you must use the `--name` flag.
 
-```bash
-docker run -dit --entrypoint /bin/bash random-matrix-generator:latest
-```
+The `--entrypoint` flag is used to override the default entrypoint of the image.
+This is useful when you want to run a different command in the container.
 
-When running in detached mode, docker assigns a random name to the container (e.g., `frosty_bell`, `happy_banach`).
-To assign a specific name to the container, you can use the `--name` flag:
-
-```bash
-docker run -dit --name my_container random-matrix-generator:latest
-```
+To attach VSCode to the running container, you can use the `Dev Containers` extension.
+To do this, you need to install the `Dev Containers` and `Docker` extensions in VSCode.
+In the Docker tab, you can see the list of running containers.
+You can right-click on the container and select `Attach Visual Studio Code`.
+This will open a new VSCode window with the source code of the container.
 
 A container name must be unique on a Docker host.
 Even after the container is stopped, the name is still reserved.
@@ -455,3 +480,75 @@ You can now run the WSL distribution using the following command:
 wsl -d my_container
 ```
 
+## Docker Compose
+
+Docker Compose is a tool for defining and running multi-container Docker applications.
+It allows you to define a multi-container application in a single YAML file, known as the Compose file.
+
+### Installation
+
+To install Docker Compose, you can follow the instructions on the [official website](https://docs.docker.com/compose/install/).
+
+To summarize, if you have Docker Engine installed, you can install Docker Compose by running the following commands:
+
+```bash
+sudo apt update
+sudo apt install docker-compose-plugin
+```
+
+### Compose File
+
+The Compose file is a YAML file that defines the services, networks, and volumes for your application.
+Services are the containers that make up your application, networks are the communication channels between the containers, and volumes are the persistent storage for the containers.
+
+The preferred file name is `compose.yaml` or `compose.yml`.
+For backward compatibility with older versions of Docker Compose, `docker-compose.yaml` or `docker-compose.yml` are also supported.
+
+A minimal Compose file for an application with two services, `web` and `redis`, looks like this:
+
+```yaml
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+
+  redis:
+    image: "redis:alpine"
+```
+
+In this example, the `web` service is built from the current directory (`.`), meaning it uses the `Dockerfile` in the current directory.
+The `ports` section maps port `5000` in the container to port `8000` on the host machine, which allows you to access the web service from your host machine.
+The `redis` service uses the `redis:alpine` image, which is a lightweight version of the Redis database, but it can be replaced with any other image you want to use.
+
+If additional arguments are needed to build the `web` service, you can break the `build` section into two parts: `context`, which specifies the build context (the directory containing the Dockerfile), and `args`, which specifies the build arguments.
+  
+```yaml
+services:
+  web:
+    build:
+      context: .
+      args:
+        MY_ARG: "value"
+    ports:
+      - "8000:5000"
+
+  redis:
+    image: "redis:alpine"
+```
+
+### Build and Run the Compose Application
+
+To build and run the application defined in the Compose file, you can use the `docker compose up` command.
+
+```bash
+docker compose up
+```
+
+This command will build the images for the services defined in the Compose file and start the containers.
+
+To stop the application, you can use the `docker compose down` command.
+
+```bash
+docker compose down
+```
